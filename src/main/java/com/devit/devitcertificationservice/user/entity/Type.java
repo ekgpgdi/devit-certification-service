@@ -9,7 +9,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum Type {
     GENERAL("GENERAL", "일반 가입 회원"),
-    SOCIAL("ADMIN", "소셜 가입 회원");
+    SOCIAL("SOCIAL", "소셜 가입 회원");
 
     private final String code;
     private final String displayName;

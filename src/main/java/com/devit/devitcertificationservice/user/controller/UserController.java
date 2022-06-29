@@ -6,13 +6,10 @@ import com.devit.devitcertificationservice.user.dto.JoinDto;
 import com.devit.devitcertificationservice.user.entity.Type;
 import com.devit.devitcertificationservice.user.sevice.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,5 +38,18 @@ public class UserController {
         Boolean duplicate = userService.duplicateCheck(requestObject);
         ResponseDetails responseDetails = ResponseDetails.success(duplicate, "/api/auth/duplicate-check");
         return new ResponseEntity<>(responseDetails, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/api/auth/kakao/login")
+    public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response){
+        // authorizedCode: 카카오 서버로부터 받은 인가 코드
+        TokenDto token = userService.kakao(code, response);
+        ResponseDetails responseDetails;
+        if (token == null) {
+            responseDetails = ResponseDetails.fail("토큰 발급에 실패했습니다.", "/api/auth/kakao/login");
+            return new ResponseEntity<>(responseDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        responseDetails = ResponseDetails.success(token, "/api/auth/kakao/login");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 }
