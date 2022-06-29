@@ -68,19 +68,19 @@ public class AuthService {
     public TokenDto login(HttpServletRequest httpRequest, HttpServletResponse httpResponse, LoginDto requestLoginDTO) {
         Optional<UserCertification> userCertificationOptional = userCertificationRepository.findByLoginId(requestLoginDTO.getEmail());
         if (userCertificationOptional.isEmpty()) {
-            System.out.println("이메일로 회원 못찾음");
             return null;
         }
 
         UserCertification user = userCertificationOptional.get();
 
         if (!passwordEncoder.matches(requestLoginDTO.getPassword(), user.getLoginPassword())) {
-            System.out.println("비밀번호 맞지 않음");
             return null;
         }
 
         AuthToken refreshToken = refreshToken(user);
         AuthToken accessToken = AccessToken(user);
+
+        refreshTokenAddCookie(httpResponse, refreshToken.getToken());
 
         return new TokenDto(accessToken.getToken(), refreshToken.getToken());
     }
@@ -101,7 +101,6 @@ public class AuthService {
 
         String path = "/api/auth/refresh";
 
-        System.out.println(authToken.getToken());
         if (!authToken.validate()) {
             return ResponseDetails.invalidAccessToken(path);
         }
