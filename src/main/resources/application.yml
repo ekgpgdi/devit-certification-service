@@ -26,6 +26,14 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+  rabbitmq:
+    host: localhost
+    password: 1234
+    port: 5672
+    username: devit
+    exchange: devit.exchange
+    queue: q.user
+    routingkey: devit.routingkey
 
 #  application:
 #    name: certification-service
@@ -51,3 +59,5 @@ app:
   auth:
     tokenExpiry: 10800000            # 3시간
     refreshTokenExpiry: 604800000    # 7일
+
+  message: Message has been sent Successfully..
