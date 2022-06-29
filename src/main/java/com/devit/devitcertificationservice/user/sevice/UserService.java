@@ -4,6 +4,8 @@ import com.devit.devitcertificationservice.auth.dto.TokenDto;
 import com.devit.devitcertificationservice.auth.service.AuthService;
 import com.devit.devitcertificationservice.auth.util.CookieUtil;
 import com.devit.devitcertificationservice.auth.util.token.AuthToken;
+import com.devit.devitcertificationservice.rabbitMQ.RabbitMqSender;
+import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
 import com.devit.devitcertificationservice.user.dto.JoinDto;
 import com.devit.devitcertificationservice.user.entity.Type;
 import com.devit.devitcertificationservice.user.entity.UserCertification;
@@ -25,6 +27,7 @@ public class UserService {
     private final UserCertificationRepository userCertificationRepository;
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
+    private final RabbitMqSender rabbitMqSender;
 
     /**
      * 이메일 중복 체크
@@ -55,6 +58,10 @@ public class UserService {
         authService.refreshTokenAddCookie(response, refreshToken.getToken());
 
         userCertificationRepository.save(user);
+
+        UserDto userDto = new UserDto(requestJoinDTO.getEmail(), requestJoinDTO.getName(), uuid);
+
+        rabbitMqSender.send(userDto);
 
         return new TokenDto(accessToken.getToken(), refreshToken.getToken());
     }
