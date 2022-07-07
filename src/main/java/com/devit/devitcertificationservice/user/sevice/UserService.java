@@ -5,6 +5,7 @@ import com.devit.devitcertificationservice.auth.security.KakaoOAuth2;
 import com.devit.devitcertificationservice.auth.service.AuthService;
 import com.devit.devitcertificationservice.auth.util.CookieUtil;
 import com.devit.devitcertificationservice.auth.util.token.AuthToken;
+import com.devit.devitcertificationservice.common.ResponseDetails;
 import com.devit.devitcertificationservice.rabbitMQ.RabbitMqSender;
 import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
 import com.devit.devitcertificationservice.user.dto.JoinDto;
@@ -14,15 +15,20 @@ import com.devit.devitcertificationservice.user.entity.Type;
 import com.devit.devitcertificationservice.user.entity.UserCertification;
 import com.devit.devitcertificationservice.user.repository.UserCertificationRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,7 +45,6 @@ public class UserService {
 
     @Value("${kakao.adminToken}")
     private String ADMIN_TOKEN;
-
 
     /**
      * 이메일 중복 체크
@@ -79,14 +84,6 @@ public class UserService {
     }
 
     /**
-     * 이메일 중복 체크
-     */
-    public Boolean duplicateCheck(Map<String, String> requestObject) {
-        String email = requestObject.get("email");
-        return emailDuplicate(email);
-    }
-
-    /**
      * 카카오 로그인 시 DB에 회원 정보가 있다면 토큰 발급
      */
     public TokenDto getToken(UserCertification user, HttpServletResponse response) {
@@ -121,7 +118,7 @@ public class UserService {
         Long kakaoId = userInfo.getId();
         // 패스워드를 카카오 Id + ADMIN TOKEN 로 지정
         String password = kakaoId + ADMIN_TOKEN;
-        JoinDto joinDto = new JoinDto(userInfo.getEmail(), password, userInfo.getNickname(), "GENERAL");
+        JoinDto joinDto = new JoinDto(userInfo.getEmail(), password, userInfo.getNickname());
         return join(response, joinDto, Type.valueOf("SOCIAL"));
     }
 
