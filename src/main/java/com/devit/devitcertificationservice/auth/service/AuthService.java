@@ -56,6 +56,7 @@ public class AuthService {
         Date now = new Date();
         return tokenProvider.createAuthToken(
                 user.getLoginId(),
+                user.getNickName(),
                 user.getUid(),
                 user.getRole().getCode(),
                 new Date(now.getTime() + appProperties.getTokenExpiry())
@@ -68,23 +69,26 @@ public class AuthService {
     public TokenDto login(HttpServletRequest httpRequest, HttpServletResponse httpResponse, LoginDto requestLoginDTO) {
         Optional<UserCertification> userCertificationOptional = userCertificationRepository.findByLoginId(requestLoginDTO.getEmail());
         if (userCertificationOptional.isEmpty()) {
-            System.out.println("이메일로 회원 못찾음");
             return null;
         }
 
         UserCertification user = userCertificationOptional.get();
 
         if (!passwordEncoder.matches(requestLoginDTO.getPassword(), user.getLoginPassword())) {
-            System.out.println("비밀번호 맞지 않음");
             return null;
         }
 
         AuthToken refreshToken = refreshToken(user);
         AuthToken accessToken = AccessToken(user);
 
-        return new TokenDto(accessToken.getToken(), refreshToken.getToken());
+        refreshTokenAddCookie(httpResponse, refreshToken.getToken());
+
+        return new TokenDto(accessToken.getToken());
     }
 
+    /**
+     * 헤더에 refresh token 추가
+     */
     public void refreshTokenAddCookie(HttpServletResponse response, String refreshToken) {
         long refreshTokenExpiry = appProperties.getRefreshTokenExpiry();
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
@@ -101,7 +105,6 @@ public class AuthService {
 
         String path = "/api/auth/refresh";
 
-        System.out.println(authToken.getToken());
         if (!authToken.validate()) {
             return ResponseDetails.invalidAccessToken(path);
         }
@@ -112,7 +115,7 @@ public class AuthService {
             return ResponseDetails.notExpiredTokenYet(path);
         }
 
-        String email = (String)claims.get(AuthToken.USER_ID);
+        String email = (String) claims.get(AuthToken.USER_ID);
 
         // refresh token
         String refreshToken = CookieUtil.getCookie(request, AuthToken.REFRESH_TOKEN)
@@ -137,6 +140,7 @@ public class AuthService {
         Date now = new Date();
         AuthToken newAccessToken = tokenProvider.createAuthToken(
                 user.getLoginId(),
+                user.getNickName(),
                 user.getUid(),
                 user.getRole().getCode(),
                 new Date(now.getTime() + appProperties.getTokenExpiry())
@@ -158,6 +162,6 @@ public class AuthService {
             refreshTokenAddCookie(response, authRefreshToken.getToken());
         }
 
-        return ResponseDetails.success(new TokenDto(newAccessToken.getToken(), authRefreshToken.getToken()), path);
+        return ResponseDetails.success(new TokenDto(newAccessToken.getToken()), path);
     }
 }

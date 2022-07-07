@@ -1,27 +1,36 @@
 package com.devit.devitcertificationservice.swagger;
 
 
+import com.devit.devitcertificationservice.auth.dto.TokenDto;
+import com.devit.devitcertificationservice.common.ResponseDetails;
+import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
+
     @Bean
-    public Docket restAPI() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
+    public Docket api(TypeResolver typeResolver) {
+        return new Docket(DocumentationType.OAS_30)
+                // additionalModels 을 추가
+                .additionalModels(
+                        typeResolver.resolve(ResponseEntity.class)
+                )
+                .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.devit.devitcertificationservice"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
