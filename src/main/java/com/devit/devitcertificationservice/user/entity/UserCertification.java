@@ -35,6 +35,9 @@ public class UserCertification extends Timestamped {
     @ApiModelProperty(example = "회원이 로그인 시 사용할 password")
     private String loginPassword;
 
+    @ApiModelProperty(example = "회원가입 시의 이름 (카카오에서는 닉네임)")
+    private String nickName;
+
     @Enumerated(EnumType.STRING)
     @ApiModelProperty(example = "회원 role")
     private Role role;
@@ -49,6 +52,7 @@ public class UserCertification extends Timestamped {
 
     public UserCertification(JoinDto requestJoinDTO, Type general, UUID uid) {
         this.loginId = requestJoinDTO.getEmail();
+        this.nickName = requestJoinDTO.getNickName();
         this.role = Role.valueOf(requestJoinDTO.getRole());
         this.type = general;
         this.uid = uid;
