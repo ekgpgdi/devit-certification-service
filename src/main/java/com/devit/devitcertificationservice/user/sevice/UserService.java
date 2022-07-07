@@ -71,11 +71,11 @@ public class UserService {
 
         userCertificationRepository.save(user);
 
-        UserDto userDto = new UserDto(requestJoinDTO.getEmail(), requestJoinDTO.getName(), uuid);
+        UserDto userDto = new UserDto(requestJoinDTO.getEmail(), requestJoinDTO.getNickName(), uuid);
 
         rabbitMqSender.send(userDto);
 
-        return new TokenDto(accessToken.getToken(), refreshToken.getToken());
+        return new TokenDto(accessToken.getToken());
     }
 
     /**
@@ -98,7 +98,7 @@ public class UserService {
         // access token 발급
         AuthToken accessToken = authService.AccessToken(user);
 
-        return new TokenDto(accessToken.getToken(), refreshToken.getToken());
+        return new TokenDto(accessToken.getToken());
     }
 
     /**

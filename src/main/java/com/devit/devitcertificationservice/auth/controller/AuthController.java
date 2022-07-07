@@ -5,6 +5,7 @@ import com.devit.devitcertificationservice.auth.dto.TokenDto;
 import com.devit.devitcertificationservice.auth.service.AuthService;
 import com.devit.devitcertificationservice.common.ResponseDetails;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
+    @ApiModelProperty(value = "로그인", notes = "이메일, 비밀번호를 이용하여 로그인을 진행합니다.")
     public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginDto requestLoginDTO) {
+        System.out.println("게이트웨이를 통해 들어왔습니다! :)");
         TokenDto token = authService.login(request, response, requestLoginDTO);
         ResponseDetails responseDetails;
         if (token == null) {
@@ -37,6 +40,7 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
+    @ApiModelProperty(value = "토큰 갱신", notes = "refresh token 을 이용하여 새로운 access token을 발급받습니다.")
     public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         ResponseDetails responseDetails = authService.refreshToken(request, response);
         return new ResponseEntity<>(responseDetails, HttpStatus.valueOf(responseDetails.getHttpStatus()));

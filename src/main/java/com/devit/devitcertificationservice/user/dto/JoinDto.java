@@ -15,7 +15,7 @@ public class JoinDto {
     @ApiModelProperty(example = "회원 로그인 비밀번호")
     private final String password;
     @ApiModelProperty(example = "회원 이름")
-    private final String name;
+    private final String nickName;
     @ApiModelProperty(example = "회원 권한")
     private final String role;
 }

@@ -1,17 +1,14 @@
 server:
   port: 8000
 
-#eureka:
-#  client:
-#    fetch-registry: true
-#    register-with-eureka: true
-#    client:
-#      server-url:
-#        defaultZone: localhost:8761 # eureka server 설정
-#  instance:
-#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-#    ip-address: localhost
-#    prefer-ip-address: true # ip address를 사용
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://54.180.93.206:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
 spring:
   h2:
@@ -32,11 +29,11 @@ spring:
     port: 5672
     username: devit
     exchange: devit.exchange
-    queue: q.user
+    queue: q.devit
     routingkey: devit.routingkey
 
-#  application:
-#    name: certification-service
+  application:
+    name: certification-service
 
   mvc:
     pathmatch:

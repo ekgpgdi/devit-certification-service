@@ -22,8 +22,8 @@ import java.util.UUID;
 public class UserDto implements Serializable {
     @ApiModelProperty(example = "회원 이메일")
     private String email;
-    @ApiModelProperty(example = "회원 이름")
-    private String name;
+    @ApiModelProperty(example = "회원 닉네임")
+    private String nickName;
     @ApiModelProperty(example = "회원 uuid (토큰 통신에 사용 될)")
     private UUID uuid;
 
@@ -31,7 +31,7 @@ public class UserDto implements Serializable {
     public String toString() {
         return "User{" +
                 "email='" + email + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + nickName + '\'' +
                 ", uuid='" + uuid + '\'' +
                 '}';
     }
