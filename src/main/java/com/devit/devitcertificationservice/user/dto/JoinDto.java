@@ -1,7 +1,6 @@
 package com.devit.devitcertificationservice.user.dto;
 
-import com.devit.devitcertificationservice.user.entity.Role;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,12 +9,10 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class JoinDto {
-    @ApiModelProperty(example = "회원 로그인 이메일")
+    @Schema(description = "로그인 시 사용될 이메일", example = "dlekgp0423@naver.com")
     private final String email;
-    @ApiModelProperty(example = "회원 로그인 비밀번호")
+    @Schema(description = "로그인 시 사용될 패스워드", example = "1234")
     private final String password;
-    @ApiModelProperty(example = "회원 이름")
+    @Schema(description = "사용자 닉네임", example = "이다혜")
     private final String nickName;
-    @ApiModelProperty(example = "회원 권한")
-    private final String role;
 }

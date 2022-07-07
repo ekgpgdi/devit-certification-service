@@ -1,5 +1,6 @@
 package com.devit.devitcertificationservice.user.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,7 +12,9 @@ public enum Type {
     GENERAL("GENERAL", "일반 가입 회원"),
     SOCIAL("SOCIAL", "소셜 가입 회원");
 
+    @Schema(example = "회원가입 종류 -> 일반/소셜")
     private final String code;
+    @Schema(example = "회원가입 종류 설명")
     private final String displayName;
 
     public static Type of(String code) {
