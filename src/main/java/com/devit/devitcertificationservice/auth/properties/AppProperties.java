@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Configuration
 public class AppProperties {
     @Value("${app.auth.tokenExpiry}")

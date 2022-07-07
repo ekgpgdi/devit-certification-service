@@ -11,6 +11,4 @@ import lombok.Setter;
 public class TokenDto {
     @ApiModelProperty(example = "accessToken")
     private final Object accessToken;
-    @ApiModelProperty(example = "refreshToken")
-    private final Object refreshToken;
 }

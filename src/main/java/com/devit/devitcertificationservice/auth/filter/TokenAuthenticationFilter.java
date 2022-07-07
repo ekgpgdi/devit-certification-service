@@ -3,7 +3,6 @@ package com.devit.devitcertificationservice.auth.filter;
 import com.devit.devitcertificationservice.auth.util.HeaderUtil;
 import com.devit.devitcertificationservice.auth.util.token.AuthToken;
 import com.devit.devitcertificationservice.auth.util.token.AuthTokenProvider;
-import com.devit.devitcertificationservice.exception.ErrorCode;
 import com.devit.devitcertificationservice.exception.TokenValidFailedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
