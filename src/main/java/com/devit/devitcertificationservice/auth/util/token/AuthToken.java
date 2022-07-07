@@ -20,7 +20,7 @@ public class AuthToken {
     public static final String REFRESH_TOKEN = "refresh_token";
     public static final String AUTHORITIES_KEY = "role";
     public static final String USER_ID = "email";
-    public static final String UID = "uid";
+    public static final String UID = "uuid";
     public static final String NICK_NAME = "nickName";
 
     AuthToken(Date expiry, Key key) {
