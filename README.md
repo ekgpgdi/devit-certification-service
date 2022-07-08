@@ -14,3 +14,4 @@ Spring Security, JWT, Swagger, RabbitMQ, Eureka 를 활용하였습니다.
 
 ## API List
 https://devit-spring.s3.ap-northeast-2.amazonaws.com/Swagger+UI.pdf
+<img width="1173" alt="스크린샷 2022-07-08 오후 5 08 42" src="https://user-images.githubusercontent.com/84092014/177947346-a1816e49-da6e-47f0-a873-90a25d25e6e9.png">
