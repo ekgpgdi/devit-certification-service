@@ -7,4 +7,10 @@
 
 
 ## Devit Certification Service
-Devit 프로젝트 
+Devit 프로젝트 내 인증 서비스입니다. <br/>
+로그인과 회원가입, 토큰 갱신 기능을 담당하며 요청에 따라 사용자를 식별하고 토큰을 발급 및 갱신합니다.
+
+Spring Security, JWT, Swagger, RabbitMQ, Eureka 를 활용하였습니다.
+
+## API List
+[Swagger UI.pdf](https://github.com/ekgpgdi/devit-certification-service/files/9070119/Swagger.UI.pdf)
