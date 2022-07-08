@@ -13,4 +13,4 @@ Devit 프로젝트 내 인증 서비스입니다. <br/>
 Spring Security, JWT, Swagger, RabbitMQ, Eureka 를 활용하였습니다.
 
 ## API List
-[Swagger UI.pdf](https://github.com/ekgpgdi/devit-certification-service/files/9070119/Swagger.UI.pdf)
+https://devit-spring.s3.ap-northeast-2.amazonaws.com/Swagger+UI.pdf
