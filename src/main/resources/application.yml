@@ -28,9 +28,14 @@ spring:
     password: 1234
     port: 5672
     username: devit
-    exchange: x.devit.user
-    queue: q.devit.user
-    routingkey: devit.routingkey
+    user:
+      exchange: x.devit.user
+      queue: q.devit.user
+      routingkey: devit.routingkey
+    point_user:
+      exchange: x.devit.point_user
+      queue: q.devit.point_user
+      routingkey: devit.routingkey
 
   application:
     name: certification-service

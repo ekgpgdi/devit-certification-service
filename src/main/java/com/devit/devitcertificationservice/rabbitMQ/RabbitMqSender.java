@@ -23,17 +23,23 @@ public class RabbitMqSender {
 
     // yml 파일에서 가져옴
     // 메시지를 다른 대기열로 라우팅하는 역할을 하는 RabbitMQ 교환을 정의RabbitMQConfig
-    @Value("${spring.rabbitmq.exchange}")
-    private String exchange;
+    @Value("${spring.rabbitmq.user.exchange}")
+    private String userExchange;
     // 교환 유형에 따라 메시지를 큐로 라우팅하는 방법을 정의
-    @Value("${spring.rabbitmq.routingkey}")
-    private String routingkey;
+    @Value("${spring.rabbitmq.user.routingkey}")
+    private String userRoutingkey;
+    @Value("${spring.rabbitmq.point_user.exchange}")
+    private String pointUserExchange;
+    // 교환 유형에 따라 메시지를 큐로 라우팅하는 방법을 정의
+    @Value("${spring.rabbitmq.point_user.routingkey}")
+    private String pointUserRoutingkey;
     // yml 파일의 message 를 가져옴
     @Value("${app.message}")
     private String message;
 
     public void send(UserDto userDto) {
-        rabbitTemplate.convertAndSend(exchange, routingkey, userDto);
+        rabbitTemplate.convertAndSend(userExchange, userRoutingkey, userDto);
+        rabbitTemplate.convertAndSend(pointUserExchange, pointUserRoutingkey, userDto);
         log.info(message);
     }
 }
