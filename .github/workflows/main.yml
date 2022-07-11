@@ -35,7 +35,7 @@ jobs:
         with:
           character set server: 'utf8'
           mysql database: 'devit_certification'
-          mysql user: 'devit'
+          mysql user: 'dahye'
           mysql password: ${{ secrets.MYSQL_PASSWORD }}
 
       - name: Grant execute permission for gradlew

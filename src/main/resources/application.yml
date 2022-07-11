@@ -16,7 +16,7 @@ spring:
       enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database-certification.copkmnpqtze8.ap-northeast-2.rds.amazonaws.com:3306/devit_certification?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://database-devit-certification.copkmnpqtze8.ap-northeast-2.rds.amazonaws.com:3306/devit_certification?serverTimezone=Asia/Seoul
     username: dahye
     password: dlekgp0912!!
   jpa:
