@@ -30,6 +30,14 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Setup MySQL
+        uses: samin/mysql-action@v1
+        with:
+          character set server: 'utf8'
+          mysql database: 'devit_certification'
+          mysql user: 'devit'
+          mysql password: ${{ secrets.MYSQL_PASSWORD }}
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -47,7 +55,6 @@ jobs:
       # appspec.yml 파일 복사
       - name: Copy appspec.yml
         run: cp appspec.yml ./deploy
-
 
       # script files 복사
       - name: Copy script
