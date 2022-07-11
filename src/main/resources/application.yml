@@ -28,8 +28,8 @@ spring:
     password: 1234
     port: 5672
     username: devit
-    exchange: devit.exchange
-    queue: q.devit
+    exchange: x.devit.user
+    queue: q.devit.user
     routingkey: devit.routingkey
 
   application:
