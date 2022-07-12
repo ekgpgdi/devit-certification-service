@@ -59,6 +59,7 @@ public class AuthService {
                 user.getNickName(),
                 user.getUid(),
                 user.getRole().getCode(),
+                user.getType().getCode(),
                 new Date(now.getTime() + appProperties.getTokenExpiry())
         );
     }
@@ -143,6 +144,7 @@ public class AuthService {
                 user.getNickName(),
                 user.getUid(),
                 user.getRole().getCode(),
+                user.getType().getCode(),
                 new Date(now.getTime() + appProperties.getTokenExpiry())
         );
 

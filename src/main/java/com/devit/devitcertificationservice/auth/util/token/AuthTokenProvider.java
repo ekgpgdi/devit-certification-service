@@ -31,8 +31,8 @@ public class AuthTokenProvider {
         return new AuthToken(expiry, key);
     }
 
-    public AuthToken createAuthToken(String email, String nickName, UUID uid, String role, Date expiry) {
-        return new AuthToken(email, nickName, uid, role, expiry, key);
+    public AuthToken createAuthToken(String email, String nickName, UUID uid, String role, String type, Date expiry) {
+        return new AuthToken(email, nickName, uid, role, type, expiry, key);
     }
 
     public AuthToken convertAuthToken(String token) {
