@@ -121,13 +121,18 @@ public class UserService {
         KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(authorizedCode);
         log.info("카카오 OAuth2 를 통해 카카오 사용자 정보 조회 완료");
 
+        log.info("이메일 중복 체크 진행");
+        log.info("중복 체크 진행 이메일 : " + userInfo.getEmail());
         // 이메일 중복 체크 진행 → 중복이라면 이미 가입된 유저임
         Optional<UserCertification> user = userCertificationRepository.findByLoginId(userInfo.getEmail());
+        log.info("이메일 중복 체크 진행 완료");
         TokenDto token;
         if (user.isPresent()) {
+            log.info("이미 존재하는 회원 토큰 발급");
             // 이미 존재하는 회원이면 토큰 발급
             token = kakaoLogin(userInfo, user.get(), response);
         } else {
+            log.info("새로운 회원 토큰 발급");
             token = kakaoJoin(userInfo, response);
         }
         return token;
