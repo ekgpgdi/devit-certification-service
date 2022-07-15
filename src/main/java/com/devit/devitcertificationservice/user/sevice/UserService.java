@@ -3,39 +3,29 @@ package com.devit.devitcertificationservice.user.sevice;
 import com.devit.devitcertificationservice.auth.dto.TokenDto;
 import com.devit.devitcertificationservice.auth.security.KakaoOAuth2;
 import com.devit.devitcertificationservice.auth.service.AuthService;
-import com.devit.devitcertificationservice.auth.util.CookieUtil;
 import com.devit.devitcertificationservice.auth.util.token.AuthToken;
-import com.devit.devitcertificationservice.common.ResponseDetails;
 import com.devit.devitcertificationservice.rabbitMQ.RabbitMqSender;
 import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
 import com.devit.devitcertificationservice.user.dto.JoinDto;
 import com.devit.devitcertificationservice.user.dto.KakaoUserInfo;
-import com.devit.devitcertificationservice.user.entity.Role;
 import com.devit.devitcertificationservice.user.entity.Type;
 import com.devit.devitcertificationservice.user.entity.UserCertification;
 import com.devit.devitcertificationservice.user.repository.UserCertificationRepository;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Base64;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserService {
     private final UserCertificationRepository userCertificationRepository;
     private final AuthService authService;
@@ -126,8 +116,10 @@ public class UserService {
      * 프론트에서 카카오 로그인 클릭 시 실행되는 서비스 로직
      */
     public TokenDto kakao(String authorizedCode, HttpServletResponse response) {
+        log.info("카카오 OAuth2 를 통해 카카오 사용자 정보 조회 시작");
         // 카카오 OAuth2 를 통해 카카오 사용자 정보 조회
         KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(authorizedCode);
+        log.info("카카오 OAuth2 를 통해 카카오 사용자 정보 조회 완료");
 
         // 이메일 중복 체크 진행 → 중복이라면 이미 가입된 유저임
         Optional<UserCertification> user = userCertificationRepository.findByLoginId(userInfo.getEmail());

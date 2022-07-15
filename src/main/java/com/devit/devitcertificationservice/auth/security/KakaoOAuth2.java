@@ -1,6 +1,7 @@
 package com.devit.devitcertificationservice.auth.security;
 
 import com.devit.devitcertificationservice.user.dto.KakaoUserInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -13,17 +14,18 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 
 @Component
+@Slf4j
 public class KakaoOAuth2 {
     @Value("${kakao.secret}")
     private String restApiKey;
 
     public KakaoUserInfo getUserInfo(String authorizedCode) {
+        log.info("인가 코드로 카카오 액세스 토큰 얻기 시작");
         // 1. 인가코드 -> 액세스 토큰
         String accessToken = getAccessToken(authorizedCode);
+        log.info("액세스 토큰으로 카카오 사용자 정보 조회 시작");
         // 2. 액세스 토큰 -> 카카오 사용자 정보
-        KakaoUserInfo userInfo = getUserInfoByToken(accessToken);
-
-        return userInfo;
+        return getUserInfoByToken(accessToken);
     }
 
     /**
@@ -46,6 +48,7 @@ public class KakaoOAuth2 {
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
                 new HttpEntity<>(params, headers);
 
+        log.info("카카오에게 액세스 토큰 요청 시작");
         // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
         ResponseEntity<String> response = rt.exchange(
                 "https://kauth.kakao.com/oauth/token",
@@ -54,12 +57,12 @@ public class KakaoOAuth2 {
                 String.class
         );
 
+        log.info("카카오에게 액세스 토큰 요청 성공");
         // JSON -> 액세스 토큰 파싱
         String tokenJson = response.getBody();
         JSONObject rjson = new JSONObject(tokenJson);
-        String accessToken = rjson.getString("access_token");
 
-        return accessToken;
+        return rjson.getString("access_token");
     }
 
     /**
@@ -75,6 +78,7 @@ public class KakaoOAuth2 {
         RestTemplate rt = new RestTemplate();
         HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers);
 
+        log.info("카카오에게 사용자 정보 요청 시작");
         // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
         ResponseEntity<String> response = rt.exchange(
                 "https://kapi.kakao.com/v2/user/me",
@@ -83,6 +87,7 @@ public class KakaoOAuth2 {
                 String.class
         );
 
+        log.info("카카오에게 사용자 정보 요청 성공");
         JSONObject body = new JSONObject(response.getBody());
         Long id = body.getLong("id");
         String email = body.getJSONObject("kakao_account").getString("email");
