@@ -48,20 +48,27 @@ public class UserService {
      * 회원가입
      */
     public TokenDto join(HttpServletResponse response, JoinDto requestJoinDTO, Type general) {
+        log.info("회원 가입 진행");
         // uuid 생성
         UUID uuid = UUID.randomUUID();
 
+        log.info("UserCertification entity 생성");
         UserCertification user = new UserCertification(requestJoinDTO, general, uuid);
         // 이메일이 중복되는 경우
         if (emailDuplicate(requestJoinDTO.getEmail())) {
             return null;
         }
 
+        log.info("refresh token 생성");
         AuthToken refreshToken = authService.refreshToken(user);
+        log.info("UserCertification entity refresh token 업데이트");
         user.updateRefreshToken(refreshToken.getToken());
+        log.info("access token 생성");
         AuthToken accessToken = authService.AccessToken(user);
 
+        log.info("UserCertification entity password 업데이트");
         user.updateUserPassword(passwordEncoder.encode(requestJoinDTO.getPassword()));
+        log.info("refresh token cookie 추가");
         authService.refreshTokenAddCookie(response, refreshToken.getToken());
 
         userCertificationRepository.save(user);
@@ -105,9 +112,11 @@ public class UserService {
      * 카카오 로그인 시 DB에 회원 정보가 없다면 회원가입 로직 실행
      */
     public TokenDto kakaoJoin(KakaoUserInfo userInfo, HttpServletResponse response) {
+        log.info("카카오 유저 id" + userInfo.getId());
         Long kakaoId = userInfo.getId();
         // 패스워드를 카카오 Id + ADMIN TOKEN 로 지정
         String password = kakaoId + ADMIN_TOKEN;
+        log.info("새로운 joinDto 생성");
         JoinDto joinDto = new JoinDto(userInfo.getEmail(), password, userInfo.getNickname());
         return join(response, joinDto, Type.valueOf("SOCIAL"));
     }
