@@ -93,7 +93,7 @@ public class AuthService {
     public void refreshTokenAddCookie(HttpServletResponse response, String refreshToken) {
         long refreshTokenExpiry = appProperties.getRefreshTokenExpiry();
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
-        CookieUtil.addCookie(response, AuthToken.REFRESH_TOKEN, refreshToken, cookieMaxAge, "localhost");
+        CookieUtil.addCookie(response, AuthToken.REFRESH_TOKEN, refreshToken, cookieMaxAge, "https://devit-spring.s3.ap-northeast-2.amazonaws.com");
     }
 
     /**
