@@ -4,6 +4,8 @@ server:
 logging:
   level:
     root: info
+  logging:
+    file: /logs/application-debug.log
 
 eureka:
   client:
