@@ -1,33 +1,29 @@
 package com.devit.devitcertificationservice.auth.controller;
 
+import com.devit.devitcertificationservice.aop.LoggingClientInfo;
 import com.devit.devitcertificationservice.auth.dto.LoginDto;
 import com.devit.devitcertificationservice.auth.dto.TokenDto;
 import com.devit.devitcertificationservice.auth.service.AuthService;
 import com.devit.devitcertificationservice.common.ResponseDetails;
-import com.devit.devitcertificationservice.user.entity.UserCertification;
 import com.devit.devitcertificationservice.user.repository.UserCertificationRepository;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@LoggingClientInfo
+@Slf4j
 public class AuthController {
     private final AuthService authService;
     private final UserCertificationRepository userCertificationRepository;
@@ -62,12 +58,15 @@ public class AuthController {
                     ))),
     })
     public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginDto requestLoginDTO) {
+        log.info("== email : {} 로그인 요청 시작 ==", requestLoginDTO.getEmail());
         TokenDto token = authService.login(request, response, requestLoginDTO);
         ResponseDetails responseDetails;
         if (token == null) {
+            log.info("email : {} 로그인 실패", requestLoginDTO.getEmail());
             responseDetails = ResponseDetails.loginFail("로그인 실패", "/api/auth/login");
             return new ResponseEntity<>(responseDetails, HttpStatus.UNAUTHORIZED);
         }
+        log.info("email : {} 로그인 성공, accessToken : {}", requestLoginDTO.getEmail(), token.getAccessToken());
         responseDetails = ResponseDetails.success(token, "/api/auth/login");
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
@@ -126,6 +125,7 @@ public class AuthController {
                     ))),
     })
     public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        log.info("== 토큰 갱신 요청 시작 == ");
         ResponseDetails responseDetails = authService.refreshToken(request, response);
         return new ResponseEntity<>(responseDetails, HttpStatus.valueOf(responseDetails.getHttpStatus()));
     }

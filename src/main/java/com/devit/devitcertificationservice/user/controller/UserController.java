@@ -1,30 +1,29 @@
 package com.devit.devitcertificationservice.user.controller;
 
+import com.devit.devitcertificationservice.aop.LoggingClientInfo;
 import com.devit.devitcertificationservice.auth.dto.TokenDto;
 import com.devit.devitcertificationservice.common.ResponseDetails;
 import com.devit.devitcertificationservice.user.dto.JoinDto;
 import com.devit.devitcertificationservice.user.entity.Type;
 import com.devit.devitcertificationservice.user.sevice.UserService;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.Example;
-import io.swagger.annotations.ExampleProperty;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.QueryParam;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@LoggingClientInfo
+@Slf4j
 public class UserController {
     private final UserService userService;
 
@@ -57,9 +56,11 @@ public class UserController {
                                     "}")))
     })
     public ResponseEntity<?> join(HttpServletRequest request, HttpServletResponse response, @RequestBody JoinDto requestJoinDTO) {
+        log.info("==회원가입 요청 시작==");
         TokenDto token = userService.join(response, requestJoinDTO, Type.GENERAL);
         ResponseDetails responseDetails;
         if (token == null) {
+            log.info("이메일 중복으로 회원가입을 실패하였습니다. [중복된 email:{}]", requestJoinDTO.getEmail());
             responseDetails = ResponseDetails.badRequest("회원가입 실패(이메일 중복)", "/api/auth/join");
             return new ResponseEntity<>(responseDetails, HttpStatus.BAD_REQUEST);
         }
@@ -84,6 +85,7 @@ public class UserController {
     }
     )
     public ResponseEntity<?> duplicateCheck(HttpServletRequest request, HttpServletResponse response, @RequestParam String email) {
+        log.info("==이메일 중복 체크 요청 시작==");
         Boolean duplicate = userService.emailDuplicate(email);
         ResponseDetails responseDetails = ResponseDetails.success(duplicate, "/api/auth/duplicate-check");
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
@@ -118,6 +120,7 @@ public class UserController {
                                     "}")))
     })
     public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
+        log.info("==카카오 로그인/회원가입 요청 시작==");
         // authorizedCode: 카카오 서버로부터 받은 인가 코드
         TokenDto token = userService.kakao(code, response);
         ResponseDetails responseDetails;

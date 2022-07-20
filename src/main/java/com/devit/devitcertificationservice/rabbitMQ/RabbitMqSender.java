@@ -38,7 +38,9 @@ public class RabbitMqSender {
     private String message;
 
     public void send(UserDto userDto) {
+        log.info("유저 도메인에 회원가입 정보를 전달합니다.");
         rabbitTemplate.convertAndSend(userExchange, userRoutingkey, userDto);
+        log.info("포인트 도메인에 회원가입 정보를 전달합니다.");
         rabbitTemplate.convertAndSend(pointUserExchange, pointUserRoutingkey, userDto);
         log.info(message);
     }
