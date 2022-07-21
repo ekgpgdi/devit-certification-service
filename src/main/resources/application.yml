@@ -5,7 +5,7 @@ logging:
   level:
     root: info
   file:
-    name: /log/application-debug.log
+    name: /home/ubuntu/log/application-debug.log
 
 eureka:
   client:
