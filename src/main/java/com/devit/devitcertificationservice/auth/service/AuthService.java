@@ -134,6 +134,7 @@ public class AuthService {
         String refreshToken = CookieUtil.getCookie(request, AuthToken.REFRESH_TOKEN)
                 .map(Cookie::getValue)
                 .orElse((null));
+        log.info("refreshToken 갱신, cookie 내 refreshToken 확인 : {}", refreshToken);
         AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
 
         if (authRefreshToken.validate()) {
