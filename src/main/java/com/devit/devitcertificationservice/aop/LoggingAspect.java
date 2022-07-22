@@ -1,6 +1,7 @@
 package com.devit.devitcertificationservice.aop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 import org.springframework.web.util.WebUtils;
 
@@ -37,7 +39,8 @@ public class LoggingAspect {
             log.info("====================client information=====================");
 
             // 클라이언트 ip 출력
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            HttpServletRequest servletRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            ContentCachingRequestWrapper request = new ContentCachingRequestWrapper(servletRequest);
             String ip = request.getHeader("X-FORWARDED-FOR");
             if (ip == null) {
                 ip = request.getRemoteAddr();
@@ -65,6 +68,7 @@ public class LoggingAspect {
             stopWatch.stop();
             log.info("처리 시간 = {}ms", stopWatch.getTotalTimeMillis());
 
+            mapper.registerModule(new JavaTimeModule());
             log.info("response = {}", mapper.writeValueAsString(proceed));
 
         } catch (Exception e) {
