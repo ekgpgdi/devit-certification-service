@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.QueryParam;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class UserController {
                                     "}"
                     ))),
             @ApiResponse(responseCode = "400", description = "이메일 중복으로 인한 회원가입 실패", content = @Content(
-                    schema = @Schema(requiredProperties = {"2022-07-07T05:57:33.095+00:00", "회원가입 실패(이메일 중복)", "" }),
+                    schema = @Schema(requiredProperties = {"2022-07-07T05:57:33.095+00:00", "회원가입 실패(이메일 중복)", ""}),
                     mediaType = "application/json",
                     examples = @ExampleObject(
                             name = "회원가입 실패 응답 샘플",
@@ -129,6 +130,17 @@ public class UserController {
             return new ResponseEntity<>(responseDetails, HttpStatus.UNAUTHORIZED);
         }
         responseDetails = ResponseDetails.success(token, "/api/auth/kakao");
+        return new ResponseEntity<>(responseDetails, HttpStatus.OK);
+    }
+
+    //이메일 인증
+    @GetMapping("/email")
+    @ResponseBody
+    public ResponseEntity<?> mailCheck(@QueryParam(value = "email") String email) {
+        log.info("==이메일 인증 요청 시작==");
+        log.info("이메일 인증 이메일 : {}", email);
+        String code = userService.send(email);
+        ResponseDetails responseDetails = ResponseDetails.success(code, "/api/auth/email");
         return new ResponseEntity<>(responseDetails, HttpStatus.OK);
     }
 }
