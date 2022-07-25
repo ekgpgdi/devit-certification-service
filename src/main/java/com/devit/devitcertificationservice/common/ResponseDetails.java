@@ -1,5 +1,8 @@
 package com.devit.devitcertificationservice.common;
 
+import com.devit.devitcertificationservice.auth.dto.TokenDto;
+import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +30,13 @@ public class ResponseDetails {
     private final static String INVALID_REFRESH_TOKEN_MESSAGE = "Invalid refresh token.";
     private final static String NOT_EXPIRED_TOKEN_YET_MESSAGE = "Not expired token yet.";
 
+    @Schema
     private Date timestamp;
+    @Schema(anyOf = { TokenDto.class, UserDto.class, String.class })
     private Object data;
+    @Schema
     private int httpStatus;
+    @Schema
     private String path;
 
     public ResponseDetails(Object data, int httpStatus, String path){

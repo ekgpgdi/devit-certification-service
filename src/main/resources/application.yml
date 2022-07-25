@@ -1,0 +1,76 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: info
+  file:
+    name: /home/ubuntu/log/application-debug.log
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://54.180.93.206:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-devit-certification.copkmnpqtze8.ap-northeast-2.rds.amazonaws.com:3306/devit_certification?serverTimezone=Asia/Seoul
+    username: dahye
+    password: dlekgp0912!!
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  rabbitmq:
+    host: 52.79.236.81
+    password: 1234
+    port: 5672
+    username: devit
+    user:
+      exchange: x.devit.user
+      queue: q.devit.user
+      routingkey: devit.routingkey
+    point_user:
+      exchange: x.devit.point_user
+      queue: q.devit.point_user
+      routingkey: devit.routingkey
+
+  application:
+    name: certification-service
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+cors:
+  allowed-origins: http://localhost:8000
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: \*
+  exposed-headers: Set-Cookie
+  max-age: 3600
+
+  # jwt secret key
+jwt:
+  secret: '50g/NGsxw15SwkKw8f+fxuXw6hBrEVYXCgJwyzItp8I='
+
+app:
+  auth:
+    tokenExpiry: 10800000            # 3시간
+    refreshTokenExpiry: 604800000    # 7일
+
+  message: Message has been sent Successfully..
+
+# kakao 로그인 REST API 키
+kakao:
+  secret: 9988be1384b9177a905aa0f6ab1a0d66
+  adminToken: ipq2DcpH7qjFmT3HqfQfpApuxWA=

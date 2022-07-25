@@ -20,17 +20,18 @@ public class AuthToken {
     public static final String REFRESH_TOKEN = "refresh_token";
     public static final String AUTHORITIES_KEY = "role";
     public static final String USER_ID = "email";
-    public static final String UID = "uid";
+    public static final String UID = "uuid";
     public static final String NICK_NAME = "nickName";
+    public static final String LOGIN_TYPE = "type";
 
     AuthToken(Date expiry, Key key) {
         this.key = key;
         this.token = createAuthToken(expiry);
     }
 
-    AuthToken(String email, String nickName, UUID uid, String role, Date expiry, Key key) {
+    AuthToken(String email, String nickName, UUID uid, String role, String type, Date expiry, Key key) {
         this.key = key;
-        this.token = createAuthToken(email, nickName, uid, role, expiry);
+        this.token = createAuthToken(email, nickName, uid, role, type, expiry);
     }
 
     // refresh token 을 만드는데 이용 될 createAuthToken
@@ -44,7 +45,7 @@ public class AuthToken {
     }
 
     // access token 을 만드는데 이용 될 createAuthToken
-    private String createAuthToken(String email, String nickName, UUID uid, String role, Date expiry) {
+    private String createAuthToken(String email, String nickName, UUID uid, String role, String type, Date expiry) {
         Date now = new Date();
 
         // .claim 을 이용하여 페이로드에 넣을 값들을 구성해준다.
@@ -55,6 +56,7 @@ public class AuthToken {
                 .claim(UID, uid)
                 .claim(USER_ID, email)
                 .claim(NICK_NAME, nickName)
+                .claim(LOGIN_TYPE, type)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(expiry)
                 .compact();
