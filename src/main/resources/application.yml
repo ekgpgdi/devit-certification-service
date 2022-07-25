@@ -12,7 +12,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://54.180.93.206:8761/eureka
+      defaultZone: http://localhost:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     prefer-ip-address: true
@@ -50,6 +50,19 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    default-encoding: UTF-8
+    username: smrladltwh@gmail.com
+    password: zbzrurpeuarzvobc
+    properties:
+      smtp:
+        starttls:
+          enable: true
+        auth: true
 
 
 cors:

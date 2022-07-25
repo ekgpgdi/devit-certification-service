@@ -4,6 +4,7 @@ import com.devit.devitcertificationservice.auth.dto.TokenDto;
 import com.devit.devitcertificationservice.auth.security.KakaoOAuth2;
 import com.devit.devitcertificationservice.auth.service.AuthService;
 import com.devit.devitcertificationservice.auth.util.token.AuthToken;
+import com.devit.devitcertificationservice.mail.EmailService;
 import com.devit.devitcertificationservice.rabbitMQ.RabbitMqSender;
 import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
 import com.devit.devitcertificationservice.user.dto.JoinDto;
@@ -14,12 +15,18 @@ import com.devit.devitcertificationservice.user.repository.UserCertificationRepo
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -32,6 +39,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RabbitMqSender rabbitMqSender;
     private final KakaoOAuth2 kakaoOAuth2;
+    public final SimpleMailMessage template;
+    public final EmailService emailService;
 
     @Value("${kakao.adminToken}")
     private String ADMIN_TOKEN;
@@ -153,4 +162,31 @@ public class UserService {
         }
         return token;
     }
+
+    /**
+     * 6자리의 난수 생성
+     */
+    public int makeRandomNumber() {
+        log.info("6자리 난수 생성");
+        // 난수의 범위 111111 ~ 999999 (6자리 난수)
+        Random r = new Random();
+        int checkNum = r.nextInt(888888) + 111111;
+        log.info("인증번호 : " + checkNum);
+        return checkNum;
+    }
+
+
+    /**
+     * 이메일 전송
+     */
+    public String send(String email) {
+        log.info("이메일 전송 양식 구성");
+        int code = makeRandomNumber();
+        String text = String.format(Objects.requireNonNull(template.getText()), code);
+        String subject = "[회원 가입 인증 이메일] DevIT";
+        log.info("이메일 전송 시작 [이메일 :{}, 코드: {}]", email, code);
+        emailService.sendSimpleMessage(email, subject, text);
+        return Integer.toString(code);
+    }
+
 }
