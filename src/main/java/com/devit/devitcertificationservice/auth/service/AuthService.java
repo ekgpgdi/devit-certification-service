@@ -101,7 +101,7 @@ public class AuthService {
         long refreshTokenExpiry = appProperties.getRefreshTokenExpiry();
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
         log.info("CookieUtil의 addCookie를 요청합니다.");
-        CookieUtil.addCookie(response, AuthToken.REFRESH_TOKEN, refreshToken, cookieMaxAge, "devit.shop");
+        CookieUtil.addCookie(response, AuthToken.REFRESH_TOKEN, refreshToken, cookieMaxAge, ".devit.shop");
     }
 
     /**
@@ -179,7 +179,7 @@ public class AuthService {
             user.updateRefreshToken(authRefreshToken.getToken());
 
             log.info("이전 refreshToken을 헤더에서 삭제하고 새로운 refreshToken을 추가합니다.");
-            CookieUtil.deleteCookie(request, response, AuthToken.REFRESH_TOKEN, "devit.shop");
+            CookieUtil.deleteCookie(request, response, AuthToken.REFRESH_TOKEN, ".devit.shop");
             refreshTokenAddCookie(response, authRefreshToken.getToken());
         }
 
