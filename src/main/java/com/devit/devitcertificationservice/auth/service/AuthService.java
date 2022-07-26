@@ -42,7 +42,7 @@ public class AuthService {
         Date now = new Date();
         long refreshTokenExpiry = appProperties.getRefreshTokenExpiry();
 
-        AuthToken refreshToken = tokenProvider.createAuthToken(new Date(now.getTime() + refreshTokenExpiry));
+        AuthToken refreshToken = tokenProvider.createAuthToken(user.getLoginId(), new Date(now.getTime() + refreshTokenExpiry));
         log.info("refreshToken 생성이 완료되어 user refreshToken 을 업데이트합니다.");
         user.updateRefreshToken(refreshToken.getToken());
 
@@ -173,7 +173,7 @@ public class AuthService {
             // refresh 토큰 설정
             long refreshTokenExpiry = appProperties.getRefreshTokenExpiry();
 
-            authRefreshToken = tokenProvider.createAuthToken(new Date(now.getTime() + refreshTokenExpiry));
+            authRefreshToken = tokenProvider.createAuthToken(user.getLoginId(), new Date(now.getTime() + refreshTokenExpiry));
 
             // DB에 refresh 토큰 업데이트
             user.updateRefreshToken(authRefreshToken.getToken());
