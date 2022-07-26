@@ -24,9 +24,9 @@ public class AuthToken {
     public static final String NICK_NAME = "nickName";
     public static final String LOGIN_TYPE = "type";
 
-    AuthToken(Date expiry, Key key) {
+    AuthToken(String email, Date expiry, Key key) {
         this.key = key;
-        this.token = createAuthToken(expiry);
+        this.token = createAuthToken(email, expiry);
     }
 
     AuthToken(String email, String nickName, UUID uid, String role, String type, Date expiry, Key key) {
@@ -35,9 +35,9 @@ public class AuthToken {
     }
 
     // refresh token 을 만드는데 이용 될 createAuthToken
-    private String createAuthToken(Date expiry) {
+    private String createAuthToken(String email, Date expiry) {
         return Jwts.builder()
-                .setSubject("user")
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)

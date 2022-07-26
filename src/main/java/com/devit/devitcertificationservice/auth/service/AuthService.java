@@ -42,7 +42,7 @@ public class AuthService {
         Date now = new Date();
         long refreshTokenExpiry = appProperties.getRefreshTokenExpiry();
 
-        AuthToken refreshToken = tokenProvider.createAuthToken(new Date(now.getTime() + refreshTokenExpiry));
+        AuthToken refreshToken = tokenProvider.createAuthToken(user.getLoginId(), new Date(now.getTime() + refreshTokenExpiry));
         log.info("refreshToken 생성이 완료되어 user refreshToken 을 업데이트합니다.");
         user.updateRefreshToken(refreshToken.getToken());
 
@@ -101,7 +101,7 @@ public class AuthService {
         long refreshTokenExpiry = appProperties.getRefreshTokenExpiry();
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
         log.info("CookieUtil의 addCookie를 요청합니다.");
-        CookieUtil.addCookie(response, AuthToken.REFRESH_TOKEN, refreshToken, cookieMaxAge, ".devit.shop");
+        CookieUtil.addCookie(response, AuthToken.REFRESH_TOKEN, refreshToken, cookieMaxAge, "devit.shop");
     }
 
     /**
@@ -173,13 +173,13 @@ public class AuthService {
             // refresh 토큰 설정
             long refreshTokenExpiry = appProperties.getRefreshTokenExpiry();
 
-            authRefreshToken = tokenProvider.createAuthToken(new Date(now.getTime() + refreshTokenExpiry));
+            authRefreshToken = tokenProvider.createAuthToken(user.getLoginId(), new Date(now.getTime() + refreshTokenExpiry));
 
             // DB에 refresh 토큰 업데이트
             user.updateRefreshToken(authRefreshToken.getToken());
 
             log.info("이전 refreshToken을 헤더에서 삭제하고 새로운 refreshToken을 추가합니다.");
-            CookieUtil.deleteCookie(request, response, AuthToken.REFRESH_TOKEN, ".devit.shop");
+            CookieUtil.deleteCookie(request, response, AuthToken.REFRESH_TOKEN, "devit.shop");
             refreshTokenAddCookie(response, authRefreshToken.getToken());
         }
 

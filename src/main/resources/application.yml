@@ -51,6 +51,19 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    default-encoding: UTF-8
+    username: smrladltwh@gmail.com
+    password: zbzrurpeuarzvobc
+    properties:
+      smtp:
+        starttls:
+          enable: true
+        auth: true
+
 
 cors:
   allowed-origins: http://localhost:8000
