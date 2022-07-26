@@ -25,8 +25,8 @@ public class CookieUtil {
     }
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge, String domain) {
-    	ResponseCookie cookie = ResponseCookie.from(name, value)
-            	.path("/")
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
                 .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
