@@ -58,7 +58,7 @@ public class UserController {
     })
     public ResponseEntity<?> join(HttpServletRequest request, HttpServletResponse response, @RequestBody JoinDto requestJoinDTO) {
         log.info("==회원가입 요청 시작==");
-        TokenDto token = userService.join(response, requestJoinDTO, Type.GENERAL);
+        TokenDto token = userService.join(request, response, requestJoinDTO, Type.GENERAL);
         ResponseDetails responseDetails;
         if (token == null) {
             log.info("이메일 중복으로 회원가입을 실패하였습니다. [중복된 email:{}]", requestJoinDTO.getEmail());

@@ -3,6 +3,7 @@ package com.devit.devitcertificationservice.user.sevice;
 import com.devit.devitcertificationservice.auth.dto.TokenDto;
 import com.devit.devitcertificationservice.auth.security.KakaoOAuth2;
 import com.devit.devitcertificationservice.auth.service.AuthService;
+import com.devit.devitcertificationservice.auth.util.CookieUtil;
 import com.devit.devitcertificationservice.auth.util.token.AuthToken;
 import com.devit.devitcertificationservice.mail.EmailService;
 import com.devit.devitcertificationservice.rabbitMQ.RabbitMqSender;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 import java.util.Optional;
@@ -56,7 +58,7 @@ public class UserService {
     /**
      * 회원가입
      */
-    public TokenDto join(HttpServletResponse response, JoinDto requestJoinDTO, Type general) {
+    public TokenDto join(HttpServletRequest request , HttpServletResponse response, JoinDto requestJoinDTO, Type general) {
         log.info("회원 가입 진행");
         // uuid 생성
         UUID uuid = UUID.randomUUID();
@@ -77,6 +79,9 @@ public class UserService {
 
         log.info("UserCertification entity password 업데이트");
         user.updateUserPassword(passwordEncoder.encode(requestJoinDTO.getPassword()));
+
+        log.info("refresh token cookie 삭제");
+        CookieUtil.deleteCookie(request, response, AuthToken.REFRESH_TOKEN, ".devit.shop");
         log.info("refresh token cookie 추가");
         authService.refreshTokenAddCookie(response, refreshToken.getToken());
 
