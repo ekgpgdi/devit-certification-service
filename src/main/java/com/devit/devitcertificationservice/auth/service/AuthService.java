@@ -118,11 +118,6 @@ public class AuthService {
 
         String path = "/api/auth/refresh";
 
-        if (!authToken.validate()) {
-            log.info("토큰이 유효하지 않습니다.");
-            return ResponseDetails.invalidAccessToken(path);
-        }
-
         // expired access token 인지 확인
         Claims claims = authToken.getExpiredTokenClaims();
         if (claims == null) {
