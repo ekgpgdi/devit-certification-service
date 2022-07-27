@@ -134,8 +134,8 @@ public class AuthService {
         log.info("refreshToken 갱신, cookie 내 refreshToken 확인 : {}", refreshToken);
         AuthToken authRefreshToken = tokenProvider.convertAuthToken(refreshToken);
 
-        if (authRefreshToken.validate()) {
-            log.info("쿠키에 refreshToken이 존재하지 않습니다.");
+        if (!authRefreshToken.validate()) {
+            log.info("쿠키에 refreshToken이 유효하지 않습니다.");
             return ResponseDetails.invalidRefreshToken(path);
         }
 
