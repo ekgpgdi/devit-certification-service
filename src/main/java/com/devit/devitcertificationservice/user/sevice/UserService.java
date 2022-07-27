@@ -58,7 +58,7 @@ public class UserService {
     /**
      * 회원가입
      */
-    public TokenDto join(HttpServletRequest request , HttpServletResponse response, JoinDto requestJoinDTO, Type general) {
+    public TokenDto join(HttpServletRequest request, HttpServletResponse response, JoinDto requestJoinDTO, Type general) {
         log.info("회원 가입 진행");
         // uuid 생성
         UUID uuid = UUID.randomUUID();
@@ -132,20 +132,20 @@ public class UserService {
     /**
      * 카카오 로그인 시 DB에 회원 정보가 없다면 회원가입 로직 실행
      */
-    public TokenDto kakaoJoin(KakaoUserInfo userInfo, HttpServletResponse response) {
+    public TokenDto kakaoJoin(HttpServletRequest request, KakaoUserInfo userInfo, HttpServletResponse response) {
         log.info("카카오 유저 id : {}", userInfo.getId());
         Long kakaoId = userInfo.getId();
         // 패스워드를 카카오 Id + ADMIN TOKEN 로 지정
         String password = kakaoId + ADMIN_TOKEN;
         log.info("새로운 joinDto 생성");
         JoinDto joinDto = new JoinDto(userInfo.getEmail(), password, userInfo.getNickname());
-        return join(response, joinDto, Type.valueOf("SOCIAL"));
+        return join(request, response, joinDto, Type.valueOf("SOCIAL"));
     }
 
     /**
      * 프론트에서 카카오 로그인 클릭 시 실행되는 서비스 로직
      */
-    public TokenDto kakao(String authorizedCode, HttpServletResponse response) {
+    public TokenDto kakao(String authorizedCode, HttpServletResponse response, HttpServletRequest request) {
         log.info("카카오 OAuth2 를 통해 카카오 사용자 정보 조회 시작");
         // 카카오 OAuth2 를 통해 카카오 사용자 정보 조회
         KakaoUserInfo userInfo = kakaoOAuth2.getUserInfo(authorizedCode);
@@ -163,7 +163,7 @@ public class UserService {
             token = kakaoLogin(userInfo, user.get(), response);
         } else {
             log.info("새로운 회원 토큰 발급[email: {}]", userInfo.getEmail());
-            token = kakaoJoin(userInfo, response);
+            token = kakaoJoin(request, userInfo, response);
         }
         return token;
     }

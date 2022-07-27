@@ -120,10 +120,10 @@ public class UserController {
                                     "    \"path\": \"/api/auth/kakao\"\n" +
                                     "}")))
     })
-    public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
+    public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response, HttpServletRequest request) {
         log.info("==카카오 로그인/회원가입 요청 시작==");
         // authorizedCode: 카카오 서버로부터 받은 인가 코드
-        TokenDto token = userService.kakao(code, response);
+        TokenDto token = userService.kakao(code, response, request);
         ResponseDetails responseDetails;
         if (token == null) {
             responseDetails = ResponseDetails.loginFail("카카오 소셜 로그인 실패", "/api/auth/kakao");
