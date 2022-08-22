@@ -1,15 +1,12 @@
 package com.devit.devitcertificationservice.common;
 
-import com.devit.devitcertificationservice.auth.dto.TokenDto;
+import com.devit.devitcertificationservice.dto.TokenDto;
 import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
 @RequiredArgsConstructor
