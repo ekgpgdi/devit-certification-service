@@ -2,24 +2,21 @@ package com.devit.devitcertificationservice.user.sevice;
 
 import com.devit.devitcertificationservice.auth.dto.TokenDto;
 import com.devit.devitcertificationservice.auth.security.KakaoOAuth2;
-import com.devit.devitcertificationservice.auth.service.AuthService;
 import com.devit.devitcertificationservice.auth.util.CookieUtil;
-import com.devit.devitcertificationservice.auth.util.token.AuthToken;
+import com.devit.devitcertificationservice.token.AuthToken;
 import com.devit.devitcertificationservice.mail.EmailService;
 import com.devit.devitcertificationservice.rabbitMQ.RabbitMqSender;
 import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
 import com.devit.devitcertificationservice.user.dto.JoinDto;
 import com.devit.devitcertificationservice.user.dto.KakaoUserInfo;
+import com.devit.devitcertificationservice.user.entity.Role;
 import com.devit.devitcertificationservice.user.entity.Type;
 import com.devit.devitcertificationservice.user.entity.UserCertification;
 import com.devit.devitcertificationservice.user.repository.UserCertificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +34,7 @@ import java.util.UUID;
 @Slf4j
 public class UserService {
     private final UserCertificationRepository userCertificationRepository;
-    private final AuthService authService;
+//    private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private final RabbitMqSender rabbitMqSender;
     private final KakaoOAuth2 kakaoOAuth2;
@@ -64,7 +61,13 @@ public class UserService {
         UUID uuid = UUID.randomUUID();
 
         log.info("UserCertification entity 생성");
-        UserCertification user = new UserCertification(requestJoinDTO, general, uuid);
+        UserCertification user = UserCertification.builder()
+                .loginId(requestJoinDTO.getEmail())
+                .nickName(requestJoinDTO.getNickName())
+                .role(Role.valueOf("GENERAL"))
+                .type(general)
+                .uid(uuid)
+                .build();
         // 이메일이 중복되는 경우
         if (emailDuplicate(requestJoinDTO.getEmail())) {
             return null;

@@ -4,10 +4,7 @@ import com.devit.devitcertificationservice.auth.util.Timestamped;
 import com.devit.devitcertificationservice.user.dto.JoinDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class UserCertification extends Timestamped {
     @JsonIgnore
     @Id
@@ -49,14 +47,6 @@ public class UserCertification extends Timestamped {
     @Column(unique = true)
     @Schema(example = "회원의 refresh token")
     private String refreshToken;
-
-    public UserCertification(JoinDto requestJoinDTO, Type general, UUID uid) {
-        this.loginId = requestJoinDTO.getEmail();
-        this.nickName = requestJoinDTO.getNickName();
-        this.role = Role.valueOf("GENERAL");
-        this.type = general;
-        this.uid = uid;
-    }
 
     public void updateUserPassword(String password) {
         this.loginPassword = password;
