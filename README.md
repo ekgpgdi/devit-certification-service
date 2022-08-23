@@ -29,8 +29,9 @@ JWT, Swagger, RabbitMQ, Eureka 를 활용하였습니다.
 > 채팅 서비스 : https://github.com/eet43/devit-chat <br/>
 
 <br/>
+프론트 담당 : 이다혜, 김지호, 김대희 <br/>
 
-> 프론트 : https://github.com/ekgpgdi/devit-front
+>프론트 : https://github.com/ekgpgdi/devit-front
 
 <br/>
 
@@ -89,7 +90,7 @@ JWT, Swagger, RabbitMQ, Eureka 를 활용하였습니다.
 <br/>
 
 ## 6. 핵심 트러블 슈팅
-<details><summary>고객 피드백 반영</summary>
+<details><summary>1. 고객 피드백 반영</summary>
 
 [고객 피드백 확인](https://ddori-lee.tistory.com/entry/%EA%B3%A0%EA%B0%9D-%ED%94%BC%EB%93%9C%EB%B0%B1-%EB%B0%98%EC%98%81?category=1019915) 참고
 
@@ -100,7 +101,14 @@ JWT, Swagger, RabbitMQ, Eureka 를 활용하였습니다.
 5. 게시글 작성 시간과 현재 시간의 불일치 해결
 6. 사진 크기에 따른 업로드 에러 해결
 7. 메세지큐 무한 롤백으로 인한 서버 마비 현상 해결
-
-
 </details>
 
+2. 배포 후 간헐적으로 발생하는 Cors 에러 해결
+> 팀원의 배포 과정 중 elb 의 타겟 그룹에 gateway 이외의 서비스가 올라가게 되었고 이로 인해 간헐적으로 cors 에러가 발생 
+> 간헐적으로 발생하는 cors 에러에 의문을 가지고 elb 설정을 확인하던 중 해당 문제의 원인을 파악하여 해결
+
+3. 쿠키 설정을 위한 프론트와 백엔드의 도메인 일치
+> 프론트와 백엔드의 도메인이 일치하지 않아 크롬 80 쿠키 정책에 의해 쿠키 저장이 실패하는 문제 발생
+> 프론트 도메인과 백엔드 도메인을 일치하도록 수정 
+> 프론트 도메인 : devit.shop 
+> 백엔드 도메인 : backend.devit.shop
