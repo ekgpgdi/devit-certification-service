@@ -1,12 +1,7 @@
-# Devit
-<p align="center"> 
-<img src = 'https://user-images.githubusercontent.com/84092014/177942862-e4755aa7-f87b-4eaa-8eae-07bcaeb3932e.png' style='width:300px;'/>
-</p>
-경험이 많고 실력 있는 개발자에게 도움을 받기 위한 플랫폼입니다. <br/>
-기업 또는 개인에게 알맞는 개발자의 스펙과 원하는 직무를 등록하여 구인하고 개발자는 확인 후 지원서를 넣어 서로가 만족하는 상황이 되었을 때 계약이 진행될 수 있도록 중개하는 웹 사이트입니다. <br/>
-
-## Devit Architecture
-<img width="1005" alt="스크린샷 2022-07-25 오후 12 34 59" src="https://user-images.githubusercontent.com/84092014/180694026-b0c51181-5ddc-4e84-b659-2d32d33e05eb.png">
+# DevIT
+> 개발자 구인 구직 서비스 <br/>
+> https://devit.shop/
+<br/>
 
 ## Devit Certification Service
 Devit 프로젝트 내 인증 서비스입니다. <br/>
@@ -15,14 +10,97 @@ Devit 프로젝트 내 인증 서비스입니다. <br/>
 
 JWT, Swagger, RabbitMQ, Eureka 를 활용하였습니다.
 
-## API List
-https://devit-spring.s3.ap-northeast-2.amazonaws.com/Swagger+UI.pdf
-<img width="1173" alt="스크린샷 2022-07-08 오후 5 08 42" src="https://user-images.githubusercontent.com/84092014/177947346-a1816e49-da6e-47f0-a873-90a25d25e6e9.png">
+<br/>
 
-## link to another repo
-eureka server : https://github.com/ekgpgdi/devit-eureka-server  <br/>
-gateway : https://github.com/ekgpgdi/devit-gateway <br/>
-certification : https://github.com/ekgpgdi/devit-certification-service <br/>
-board : https://github.com/kimziaco/devit-board <br/>
-user : https://github.com/eet43/devit-user <br/>
-chat : https://github.com/eet43/devit-chat <br/>
+## 0. 총 코드 
+담당 개발자 : 이다혜 <br/>
+> 유레카 서버 : https://github.com/ekgpgdi/devit-eureka-server <br/>
+> 게이트웨이 : https://github.com/ekgpgdi/devit-gateway <br/>
+> 인증 서비스 : https://github.com/ekgpgdi/devit-certification-service <br/> 
+> 결제 서비스 : https://github.com/ekgpgdi/devit-payment <br/>
+
+
+담당 개발자 : 김지호 <br/>
+> 게시물 서비스 : https://github.com/kimziaco/devit-board <br/>
+ 
+
+담당 개발자 : 김대희 
+> 유저 서비스 : https://github.com/eet43/devit-user <br/>
+> 채팅 서비스 : https://github.com/eet43/devit-chat <br/>
+
+<br/>
+
+> 프론트 : https://github.com/ekgpgdi/devit-front
+
+<br/>
+
+## 1. 제작 기간 & 참여 인원
+* 2022.06.24 ~ 2022.07.29
+* 3명 : [이다혜](https://github.com/ekgpgdi), [김지호](https://github.com/kimziaco?tab=repositories), [김대희](https://github.com/eet43)
+<br/>
+
+## 2. 사용 기술 
+<b>```Back-end```<b/>
+* Java11
+* Spring Boot 2.7.1
+* Gradle 7.4.1
+* Spring Data JPA
+* H2
+* MySQL 8.0.29
+* Spring Security 
+* JWT
+* Spring Cloud Eureka
+* RabbitMQ
+* Swagger
+
+<b>```Front-end```<b/>
+* HTML
+* JavaScript
+* Bootstrap
+
+<br/>
+
+## 3. ERD 설계
+
+<img width="639" alt="스크린샷 2022-08-09 오후 4 27 57" src="https://user-images.githubusercontent.com/84092014/183590368-612bee33-4c73-4739-a265-0365dc22a75c.png">
+
+ <img width="378" alt="스크린샷 2022-08-09 오후 4 28 09" src="https://user-images.githubusercontent.com/84092014/183590427-832e23ce-0ac3-4670-82e3-ca471412a0e2.png">
+
+
+
+<br/>
+<br/>
+
+## 4. 핵심 기능
+이 서비스의 핵심 기능은 구인자와 구직자의 결제입니다. <br/>
+현재는 결제를 경험해보기 위하여 포인트 형태로 구현해두었습니다. <br/>
+ 
+<img width="667" alt="스크린샷 2022-08-22 오전 11 03 59" src="https://user-images.githubusercontent.com/84092014/185824583-83de98c4-f28e-4de5-82d3-b6eaf6454c34.png">
+
+
+
+<br/>
+
+## 5. 아키텍처도
+<img width="699" alt="스크린샷 2022-08-22 오후 9 10 27" src="https://user-images.githubusercontent.com/84092014/186058191-a32c6744-0af4-47c0-8c8d-c67b00d6227d.png">
+<img width="1000" alt="스크린샷 2022-08-22 오후 9 10 35" src="https://user-images.githubusercontent.com/84092014/186058188-1d5e1188-0777-47a2-9fe9-1c818fce11b4.png">
+
+
+<br/>
+
+## 6. 핵심 트러블 슈팅
+<details><summary>고객 피드백 반영</summary>
+
+[고객 피드백 확인](https://ddori-lee.tistory.com/entry/%EA%B3%A0%EA%B0%9D-%ED%94%BC%EB%93%9C%EB%B0%B1-%EB%B0%98%EC%98%81?category=1019915) 참고
+
+1. http 요청에 대한 처리 <br/>
+2. 회원가입 시 이메일 검증 추가 
+3. 각 도메인의 자료형이 달라 생기는 문제 해결 
+4. XSS 공격에 대한 대처 
+5. 게시글 작성 시간과 현재 시간의 불일치 해결
+6. 사진 크기에 따른 업로드 에러 해결
+7. 메세지큐 무한 롤백으로 인한 서버 마비 현상 해결
+
+
+</details>
+
