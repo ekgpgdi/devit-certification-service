@@ -1,9 +1,5 @@
 package com.devit.devitcertificationservice.swagger;
 
-
-import com.devit.devitcertificationservice.auth.dto.TokenDto;
-import com.devit.devitcertificationservice.common.ResponseDetails;
-import com.devit.devitcertificationservice.rabbitMQ.dto.UserDto;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
