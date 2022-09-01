@@ -27,6 +27,7 @@ spring:
     username: dahye
     password: dlekgp0912!!
   jpa:
+    open-in-view: false
     show-sql: true
     hibernate:
       ddl-auto: update
