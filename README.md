@@ -1,4 +1,4 @@
-# DevIT (개발자 구인 구직 플랫폼)의 Gateway 
+# DevIT (개발자 구인 구직 플랫폼)의 Certification Service
 
 ### Devit Certification Service
 Devit 프로젝트 내 인증 서비스입니다. <br/>
